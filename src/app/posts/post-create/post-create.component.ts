@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { sharedStylesheetJitUrl } from '@angular/compiler';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Post } from '../post.model';
+
 
 
 @Component({
@@ -10,10 +12,15 @@ import { sharedStylesheetJitUrl } from '@angular/compiler';
 
 
 export class PostCreateComponent{
-  newPost = 'No Content';
-  enteredValue = ""
-  onAddPost(){
-    this.newPost = this.enteredValue;
+  enteredTitle = "";
+  enteredContent = "";
+  @Output() postCreated = new EventEmitter<Post>();
+  onAddPost(form: NgForm){
+    if(form.invalid){
+      return;
+    }
+    const post: Post = {title: form.value.title, content: form.value.content }
+    this.postCreated.emit(post);
   }
 
 }
